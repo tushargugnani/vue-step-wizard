@@ -1,13 +1,13 @@
-# vue-form-wizard-bootstrap
+# vue-step-wizard
 
-## Project setup
+## Installing Plugin
 ```
-npm install
+npm install --save vue-step-wizard
 ```
 
-### Compiles and hot-reloads for development
+### Import
 ```
-npm run serve
+import VueStepWizard from 'vue-step-wizard'
 ```
 
 ### Compiles and minifies for production
@@ -15,10 +15,13 @@ npm run serve
 npm run build
 ```
 
-### Lints and fixes files
+### Use Globally
 ```
-npm run lint
+Vue.use(VueStepWizard)
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+### Use Components Locally
+```
+import FormWizard from 'vue-step-wizard'
+import TabContent from 'vue-step-wizard'
+```
