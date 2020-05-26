@@ -26,8 +26,8 @@
     "build-library": "vue-cli-service build --target lib --name vue-step-wizard ./src/install.js",
     "lint": "vue-cli-service lint"
   },
-  "main": ".dist/vue-step-wizard.common.js",
-  "unpkg": "dist/vue-step-wizard.common.min.js",
+  "main": "./dist/vue-step-wizard.common.js",
+  "unpkg": "./dist/vue-step-wizard.common.min.js",
   "dependencies": {
     "bootstrap": "^4.5.0",
     "core-js": "^2.6.5",
