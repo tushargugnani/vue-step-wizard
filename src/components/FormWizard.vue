@@ -44,6 +44,10 @@ export default {
             this.tabs = this.$children;
             this.totalTabs = this.tabs.length;
             this.currentTab = this.tabs.findIndex((tab) => tab.isActive === true);
+            if(this.currentTab === -1 && this.totalTabs > 0){  //Select first tab if none is marked selected
+                this.tabs[0].isActive = true;
+                this.currentTab = 0;
+            }
     },
     methods:{
         previousTab(){
