@@ -1,5 +1,5 @@
 <template>
-  <div class="container" id="app">
+  <div class="container py-5" id="app">
     <SimpleStepper></SimpleStepper>
   </div>
 </template>

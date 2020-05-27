@@ -1,5 +1,12 @@
 # vue-step-wizard
 
+
+
+## Documentation
+
+https://tushargugnani.github.io/vue-step-wizard/#/
+
+
 ## Installing Plugin
 ```
 npm install --save vue-step-wizard
@@ -10,10 +17,6 @@ npm install --save vue-step-wizard
 import VueStepWizard from 'vue-step-wizard'
 ```
 
-### Compiles and minifies for production
-```
-npm run build
-```
 
 ### Use Globally
 ```
