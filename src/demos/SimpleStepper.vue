@@ -65,7 +65,7 @@ import ValidationHelper from '../components/ValidationHelper.vue';
 import { required } from 'vuelidate/lib/validators';
 import { email } from 'vuelidate/lib/validators';
 import { numeric } from 'vuelidate/lib/validators';
-
+const checked = (value) => value === true;
 
 export default {
     name: 'SimpleStepper',
@@ -86,7 +86,7 @@ export default {
             validationRules:[
                 {fullName: {required}, email: {required, email} },
                 {companyName: {required}, numberOfEmployees: {required, numeric} },
-                {referral: {required}, terms: {required, numeric} }
+                {referral: {required}, terms: {checked} }
             ]
         }
     },
