@@ -1,5 +1,6 @@
 # vue-step-wizard
 
+![alt text](https://github.com/tushargugnani/vue-step-wizard/blob/master/public/Vue-Step-Wizard.gif?raw=true)
 
 
 ## Documentation
