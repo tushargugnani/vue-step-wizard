@@ -19,7 +19,10 @@ export default {
     },
     computed:{
         rules() {
-            return this.validationRules[this.storeState.currentTab];
+            if(this.validationRules)
+                return this.validationRules[this.storeState.currentTab] ? this.validationRules[this.storeState.currentTab] : {}
+            else
+                return {};
         },
     },
     methods:{
