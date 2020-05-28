@@ -1,7 +1,7 @@
 {
   "name": "vue-step-wizard",
   "description": "A simple vuejs step/form wizard plugin",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "private": false,
   "author": {
     "name": "Tushar Gugnani",
