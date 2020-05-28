@@ -2,7 +2,7 @@
     <div class="card">
         <div class="card-header">
         <ul class="nav nav-pills nav-wizard nav-fill">
-            <li @click="selectTab(index)" class="nav-item" :class="tab.isActive ? 'active' : 'in-active'" v-for="(tab, index) in tabs" v-bind:key="`tab-${index}`">
+            <li @click.prevent="selectTab(index)" class="nav-item" :class="tab.isActive ? 'active' : 'in-active'" v-for="(tab, index) in tabs" v-bind:key="`tab-${index}`">
                 <a class="nav-link"  href="#">
                         <span class="tabStatus">{{index+1}} </span> 
                         <span class="tabLabel">{{tab.title}}</span>
