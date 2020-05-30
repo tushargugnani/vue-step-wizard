@@ -1,5 +1,5 @@
 <template>
-    <form-wizard @onComplete="onComplete">
+    <form-wizard ref="formwizard" @onComplete="onComplete">
         <tab-content title="About You" :selected="true">
             <div class="form-group">
                 <label for="fullName">Full Name</label>
@@ -93,6 +93,7 @@ export default {
     methods:{
         onComplete(){
             alert("Submitting Form ! Rock On");
+            this.$refs.formwizard.changeStatus();
         }
     }
 }

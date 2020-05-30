@@ -21,9 +21,14 @@
         </div>
         <div class="card-footer text-center">
             <div class="btn-group" role="group">
-                <button @click="previousTab" :disabled="currentTab === 0" class="btn btn-warning">Previous</button>
-                <button @click="nextTab" v-if="currentTab < totalTabs - 1" class="btn btn-primary">Next</button>
-                <button @click="onSubmit" v-if="currentTab === totalTabs - 1" class="btn btn-success">Submit</button>
+                <template v-if="!submitSuccess">
+                  <button @click="previousTab" :disabled="currentTab === 0" class="btn btn-warning">Previous</button>
+                  <button @click="nextTab" v-if="currentTab < totalTabs - 1" class="btn btn-primary">Next</button>
+                  <button @click="onSubmit" v-if="currentTab === totalTabs - 1" class="btn btn-success">Submit</button>
+                </template>
+                <template v-else>
+                  <button @click="reset" class="btn btn-info">Reset</button>
+                </template>
             </div>
         </div>
     </div>
@@ -38,6 +43,7 @@ export default {
             currentTab : 0,
             totalTabs : 0,
             storeState: store.state,
+            submitSuccess : false,
         }
     },
     mounted(){
@@ -61,6 +67,16 @@ export default {
 
             this._switchTab(this.currentTab + 1);              
               
+        },
+
+        reset(){
+           this._switchTab(0);
+           this.submitSuccess = false;
+           this.storeState.v.$reset();
+        },
+
+        changeStatus(){
+            this.submitSuccess = true;
         },
 
         selectTab(index){
