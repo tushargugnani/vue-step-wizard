@@ -58,6 +58,8 @@ export default {
     methods:{
         previousTab(){
             this._switchTab(this.currentTab - 1);
+
+            this.$emit('onPreviousStep'); 
         },
 
         nextTab(){
@@ -65,7 +67,9 @@ export default {
             if(this._validateCurrentTab() === false)
                 return;
 
-            this._switchTab(this.currentTab + 1);              
+            this._switchTab(this.currentTab + 1);    
+
+            this.$emit('onNextStep');          
               
         },
 
