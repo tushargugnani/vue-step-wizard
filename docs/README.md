@@ -225,3 +225,22 @@ You can use this to apply error classes on the input field, and also to display 
      allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking"
      sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts allow-autoplay"
    ></iframe>
+
+
+## Events
+
+### Form Submit
+
+You can utilize the `onComplete` event on form-wizard component to execute the custom code on form submission.
+
+
+```HTML
+    <form-wizard @onComplete="submit">
+```
+
+
+### Next and Previous Step
+
+```HTML
+    <form-wizard @onNextStep="nextStep" @onPreviousStep="previousStep">
+```
