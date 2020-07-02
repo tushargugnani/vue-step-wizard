@@ -19,6 +19,7 @@ export default {
     data(){
         return{
             isActive: false,
+            isValidated : false,
         }
     },
     created(){

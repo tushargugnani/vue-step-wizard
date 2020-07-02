@@ -1,5 +1,5 @@
 <template>
-    <form-wizard ref="formwizard" @onComplete="onComplete" @onNextStep="nextStep" @onPreviousStep="previousStep">
+    <form-wizard ref="formwizard" @onComplete="onComplete" @onNextStep="nextStep" @onPreviousStep="previousStep" @onReset="reset">
         <tab-content title="About You" :selected="true">
             <div class="form-group">
                 <label for="fullName">Full Name</label>
@@ -94,6 +94,12 @@ export default {
         onComplete(){
             alert("Submitting Form ! Rock On");
             this.$refs.formwizard.changeStatus();
+        },
+
+        reset(){
+            for(let field in this.formData){
+                this.formData[field] = null;
+            }
         },
 
         nextStep(){

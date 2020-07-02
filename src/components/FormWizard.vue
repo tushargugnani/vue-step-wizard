@@ -6,7 +6,7 @@
             </div>
         </div>
         <ul class="step-pills">
-            <li @click.prevent.stop="selectTab(index)" class="step-item" :class="tab.isActive ? 'active' : 'in-active'" v-for="(tab, index) in tabs" v-bind:key="`tab-${index}`">
+            <li @click.prevent.stop="selectTab(index)" class="step-item" :class="{ 'active': tab.isActive, 'validated': tab.isValidated }" v-for="(tab, index) in tabs" v-bind:key="`tab-${index}`">
                 <a class="step-link" href="#">
                         <span class="tabStatus">{{index+1}} </span> 
                         <span class="tabLabel">{{tab.title}}</span>
@@ -15,21 +15,19 @@
         </ul>
         </div>
         <div class="step-body">
-        <div class="col-lg-8 mx-auto">
             <form>
                 <slot></slot>
             </form>
         </div>
-        </div>
-        <div class="step-footer text-center">
+        <div class="step-footer">
             <div class="btn-group" role="group">
                 <template v-if="!submitSuccess">
-                  <button @click="previousTab" :disabled="currentTab === 0" class="btn btn-warning">Previous</button>
-                  <button @click="nextTab" v-if="currentTab < totalTabs - 1" class="btn btn-primary">Next</button>
-                  <button @click="onSubmit" v-if="currentTab === totalTabs - 1" class="btn btn-success">Submit</button>
+                  <button @click="previousTab" :disabled="currentTab === 0" class="step-button step-button-previous">Previous</button>
+                  <button @click="nextTab" v-if="currentTab < totalTabs - 1" class="step-button step-button-next">Next</button>
+                  <button @click="onSubmit" v-if="currentTab === totalTabs - 1" class="step-button step-button-submit">Submit</button>
                 </template>
                 <template v-else>
-                  <button @click="reset" class="btn btn-info">Reset</button>
+                  <button @click="reset" class="step-button step-button-reset">Reset</button>
                 </template>
             </div>
         </div>
@@ -47,18 +45,33 @@ export default {
             storeState: store.state,
             submitSuccess : false,
             progress: 0,
+            isValidationSupport: false
         }
     },
     mounted(){
             this.tabs = this.$children;
             this.totalTabs = this.tabs.length;
             this.currentTab = this.tabs.findIndex((tab) => tab.isActive === true);
-            if(this.currentTab === -1 && this.totalTabs > 0){  //Select first tab if none is marked selected
+
+            //Select first tab if none is marked selected
+            if(this.currentTab === -1 && this.totalTabs > 0){  
                 this.tabs[0].isActive = true;
                 this.currentTab = 0;
             }
+            
+            //Setup Initial Progress
             this.progress = ((this.currentTab + 1) / this.totalTabs * 100);
+
     },
+
+    updated(){
+        /*
+          Using this lifehook - since store variable gets updated after component is mounted
+          isValidationSupport checks if user is looking to perform validation on each step
+        */
+        this.isValidationSupport = (Object.keys(this.storeState.v).length !== 0 && this.storeState.v.constructor === Object) ? true : false;
+    },
+
     methods:{
         previousTab(){
             this._switchTab(this.currentTab - 1);
@@ -78,9 +91,17 @@ export default {
         },
 
         reset(){
+
+           this.tabs.forEach(tab => {
+             tab.isActive = false;
+             tab.isValidated = false;
+           });
+
            this._switchTab(0);
            this.submitSuccess = false;
            this.storeState.v.$reset();
+
+           this.$emit('onReset');
         },
 
         changeStatus(){
@@ -93,6 +114,10 @@ export default {
             }
 
             if(this._validateCurrentTab() === false){
+                return;
+            }
+
+            if(this.tabs[index - 1].isValidated === false){
                 return;
             }
 
@@ -120,14 +145,17 @@ export default {
         },
 
         _validateCurrentTab(){
-            if(Object.keys(this.storeState.v).length === 0 && this.storeState.v.constructor === Object)  //Check if user wants to validate and meaningful validation rules exists
+            if(!this.isValidationSupport)  //Check if user wants to validate 
                 return true;
 
             this.storeState.v.$touch();
 
             if (this.storeState.v.$invalid) {
+                this.tabs[this.currentTab].isValidated = false;
                 return false;
             }
+
+            this.tabs[this.currentTab].isValidated = true;
 
             return true;
         }
@@ -141,18 +169,7 @@ export default {
 }
 </script>
 <style>
-    .slide-leave-active,
-    .slide-enter-active {
-        transition: 1s;
-    }
-    .slide-enter {
-        opacity: 0;
-        transform: translate(100%, 0);
-    }
-    .slide-leave-to {
-        opacity: 0;
-        transform: translate(-100%, 0);
-    }
+
   .progressbar {
     transition: width 1s ease;
   } 
@@ -201,8 +218,12 @@ export default {
      color: #7B7B7B;
    }
 
-    .step-pills .step-item.active{
+   .step-pills .step-item.active{
       border: 1px solid #4B8AEB;
+   }
+
+   .step-pills .step-item.validated{
+      border: 1px solid #008011;
    }
 
    .step-body{
@@ -218,7 +239,43 @@ export default {
      padding: 1rem;
      border-radius: 1rem;
      margin: 1rem 0rem;
+     text-align: center;
    }
+
+  .step-button{
+    font-weight: 700;
+    line-height: 1;
+    text-transform: uppercase;
+    position: relative;
+    max-width: 30rem;
+    text-align: center;
+    border: 1px solid;
+    border-radius: 12px;
+    color: #22292f;
+    color: rgba(34,41,47,var(--text-opacity));
+    padding: 0.5rem 1.25rem;
+    font-size: .875rem;
+    margin: 0.5rem;
+    color: #fff;
+    outline: none !important;
+    box-shadow: none !important;
+  }
+
+  .step-button-next{
+    background-color: #126fde;
+  }
+
+  .step-button-previous{
+    background-color: #3deaba;
+  }
+
+  .step-button-submit{
+    background-color: #4fa203;
+  }
+
+  .step-button-reset{
+    background-color: #037da2;
+  }
 
   /** Wizard Ends */
   .tabStatus{
@@ -233,8 +290,5 @@ export default {
       border-radius: 50%;
   }
 
-  .nav-pills .nav-item{
-      margin: 0px 10px;
-  }
 
 </style>

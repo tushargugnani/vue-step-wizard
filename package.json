@@ -29,7 +29,6 @@
   "main": "./dist/vue-step-wizard.common.js",
   "unpkg": "./dist/vue-step-wizard.common.min.js",
   "dependencies": {
-    "bootstrap": "^4.5.0",
     "core-js": "^2.6.5",
     "vue": "^2.6.10",
     "vuelidate": "^0.7.5"
