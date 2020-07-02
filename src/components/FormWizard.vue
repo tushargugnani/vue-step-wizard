@@ -1,25 +1,27 @@
 <template>
-    <div class="card">
-        <div class="card-header">
-        <ul class="nav nav-pills nav-wizard nav-fill">
-            <li @click.prevent.stop="selectTab(index)" class="nav-item" :class="tab.isActive ? 'active' : 'in-active'" v-for="(tab, index) in tabs" v-bind:key="`tab-${index}`">
-                <a class="nav-link" href="#">
+    <div class="vue-step-wizard">
+        <div class="step-header">
+        <div class="step-progress">
+            <div class="bar progressbar" :style="{ width: progress + '%' }">
+            </div>
+        </div>
+        <ul class="step-pills">
+            <li @click.prevent.stop="selectTab(index)" class="step-item" :class="tab.isActive ? 'active' : 'in-active'" v-for="(tab, index) in tabs" v-bind:key="`tab-${index}`">
+                <a class="step-link" href="#">
                         <span class="tabStatus">{{index+1}} </span> 
                         <span class="tabLabel">{{tab.title}}</span>
                 </a>
             </li>
         </ul>
         </div>
-        <div class="card-body">
+        <div class="step-body">
         <div class="col-lg-8 mx-auto">
-   
             <form>
-            <slot></slot>
+                <slot></slot>
             </form>
-
         </div>
         </div>
-        <div class="card-footer text-center">
+        <div class="step-footer text-center">
             <div class="btn-group" role="group">
                 <template v-if="!submitSuccess">
                   <button @click="previousTab" :disabled="currentTab === 0" class="btn btn-warning">Previous</button>
@@ -44,6 +46,7 @@ export default {
             totalTabs : 0,
             storeState: store.state,
             submitSuccess : false,
+            progress: 0,
         }
     },
     mounted(){
@@ -54,6 +57,7 @@ export default {
                 this.tabs[0].isActive = true;
                 this.currentTab = 0;
             }
+            this.progress = ((this.currentTab + 1) / this.totalTabs * 100);
     },
     methods:{
         previousTab(){
@@ -111,10 +115,12 @@ export default {
 
             this.currentTab = index;
             this.tabs[index].isActive = true;
+
+            this.progress = ((this.currentTab + 1) / this.totalTabs * 100);
         },
 
         _validateCurrentTab(){
-            if(Object.keys(this.storeState.v).length === 0 && this.storeState.v.constructor === Object)
+            if(Object.keys(this.storeState.v).length === 0 && this.storeState.v.constructor === Object)  //Check if user wants to validate and meaningful validation rules exists
                 return true;
 
             this.storeState.v.$touch();
@@ -135,76 +141,85 @@ export default {
 }
 </script>
 <style>
-  /** Wizard */
-  .nav-pills.nav-wizard > li {
-    position: relative;
-    overflow: visible;
-    border-right: 15px solid transparent;
-    border-left: 15px solid transparent;
+    .slide-leave-active,
+    .slide-enter-active {
+        transition: 1s;
+    }
+    .slide-enter {
+        opacity: 0;
+        transform: translate(100%, 0);
+    }
+    .slide-leave-to {
+        opacity: 0;
+        transform: translate(-100%, 0);
+    }
+  .progressbar {
+    transition: width 1s ease;
+  } 
+
+  .vue-step-wizard{
+    background-color: #F7F8FC;
+    width: 900px;
+    margin: auto;
+    padding: 40px;
   }
-  .nav-pills.nav-wizard > li + li {
-    margin-left: 0;
+
+  .step-progress{
+    height: 1rem;
+    background: white;
+    border-radius: 1rem;
+    margin: 1rem 0rem;
   }
-  .nav-pills.nav-wizard > li:first-child {
-    border-left: 0;
+
+  .step-progress .bar{
+      content: '';
+      height: 1rem;
+      border-radius: 1rem;
+      background-color: #4B8AEB;
   }
-  .nav-pills.nav-wizard > li:first-child a {
-    border-radius: 5px 0 0 5px;
+
+  .step-pills{
+    display: flex;
+    background-color: white;
+    justify-content: space-between;
+    padding: 1rem;
+    border-radius: 1rem;
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
   }
-  .nav-pills.nav-wizard > li:last-child {
-    border-right: 0;
+
+  .step-pills .step-item{
+    background-color: #F5F5F5;
+    border-radius: 10px;
+    padding: 5px 20px;
+    list-style-type: none;
+    padding: .5rem 1.5rem;
   }
-  .nav-pills.nav-wizard > li:last-child a {
-    border-radius: 0 5px 5px 0;
-  }
-  .nav-pills.nav-wizard > li a {
-    border-radius: 0;
-    background-color: #eee;
-  }
-  .nav-pills.nav-wizard > li:not(:last-child) a:after {
-    position: absolute;
-    content: "";
-    top: 0px;
-    right: -20px;
-    width: 0px;
-    height: 0px;
-    border-style: solid;
-    border-width: 20px 0 20px 20px;
-    border-color: transparent transparent transparent #eee;
-    z-index: 150;
-  }
-  .nav-pills.nav-wizard > li:not(:first-child) a:before {
-    position: absolute;
-    content: "";
-    top: 0px;
-    left: -20px;
-    width: 0px;
-    height: 0px;
-    border-style: solid;
-    border-width: 20px 0 20px 20px;
-    border-color: #eee #eee #eee transparent;
-    z-index: 150;
-  }
-  .nav-pills.nav-wizard > li:hover:not(:last-child) a:after {
-    border-color: transparent transparent transparent #aaa;
-  }
-  .nav-pills.nav-wizard > li:hover:not(:first-child) a:before {
-    border-color: #aaa #aaa #aaa transparent;
-  }
-  .nav-pills.nav-wizard > li:hover a {
-    background-color: #aaa;
-    color: #fff;
-  }
-  .nav-pills.nav-wizard > li.active:not(:last-child) a:after {
-    border-color: transparent transparent transparent #428bca;
-  }
-  .nav-pills.nav-wizard > li.active:not(:first-child) a:before {
-    border-color: #428bca #428bca #428bca transparent;
-  }
-  .nav-pills.nav-wizard > li.active a {
-    background-color: #428bca;
-    color: #fff;
-  }
+
+
+   .step-pills .step-item a{
+     text-decoration: none;
+     color: #7B7B7B;
+   }
+
+    .step-pills .step-item.active{
+      border: 1px solid #4B8AEB;
+   }
+
+   .step-body{
+     background-color: white;
+     margin-left: auto;
+     padding: 1rem;
+     border-radius: 1rem;
+     box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
+   }
+
+  .step-footer{
+     margin-left: auto;
+     padding: 1rem;
+     border-radius: 1rem;
+     margin: 1rem 0rem;
+   }
+
   /** Wizard Ends */
   .tabStatus{
       display: inline-block;
