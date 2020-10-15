@@ -22,8 +22,8 @@
         <div class="step-footer">
             <div class="btn-group" role="group">
                 <template v-if="!submitSuccess">
-                  <button @click="previousTab" :disabled="currentTab === 0" class="step-button step-button-previous">{{previewButtonText}}</button>
-                  <button @click="nextTab" v-if="currentTab < totalTabs - 1" class="step-button step-button-next">{{nameNextButton}}</button>
+                  <button @click="previousTab" :disabled="currentTab === 0" class="step-button step-button-previous">{{previousButtonText}}</button>
+                  <button @click="nextTab" v-if="currentTab < totalTabs - 1" class="step-button step-button-next">{{nextButtonText}}</button>
                   <button @click="onSubmit" v-if="currentTab === totalTabs - 1" class="step-button step-button-submit">{{submitButtonText}}</button>
                 </template>
                 <template v-else>
@@ -39,11 +39,11 @@ export default {
     name: 'form-wizard',
 
     props: {
-      previewNameButton: {
+      previousButtonText: {
         type: String,
         default: "Previous"
       },
-      nameNextButton: {
+      nextButtonText: {
         type: String,
         default: "Next"
       },
