@@ -13,19 +13,28 @@ https://tushargugnani.github.io/vue-step-wizard/#/
 npm install --save vue-step-wizard
 ```
 
-### Import
+
+### Import Globally
 ```
 import VueStepWizard from 'vue-step-wizard'
+import 'vue-step-wizard/dist/vue-step-wizard.css'
+Vue.use(VueStepWizard);
 ```
 
+### Import and use Components Locally
+```
+//local registration
+import {FormWizard, TabContent} from 'vue-step-wizard'
+import 'vue-step-wizard/dist/vue-step-wizard.css'
+//component code
+components: {
+  FormWizard,
+  TabContent
+}
+```
 
-### Use Globally
-```
-Vue.use(VueStepWizard)
-```
+### Buy my a Pizza
 
-### Use Components Locally
-```
-import FormWizard from 'vue-step-wizard'
-import TabContent from 'vue-step-wizard'
-```
+You have an option to buy me a pizza if you found this plugin useful
+
+https://www.buymeacoffee.com/wLrF3Z0tE
