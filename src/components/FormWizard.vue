@@ -109,8 +109,10 @@ export default {
         },
 
         selectTab(index){
+            //Only switch to filled previous tabs
             if(index < this.currentTab){
               this._switchTab(index);
+              return;
             }
 
             if(this._validateCurrentTab() === false){
