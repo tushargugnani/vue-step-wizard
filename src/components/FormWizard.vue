@@ -76,7 +76,7 @@ export default {
         previousTab(){
             this._switchTab(this.currentTab - 1);
 
-            this.$emit('onPreviousStep'); 
+            this.$emit('on-previous-step'); 
         },
 
         nextTab(){
@@ -86,7 +86,7 @@ export default {
 
             this._switchTab(this.currentTab + 1);    
 
-            this.$emit('onNextStep');          
+            this.$emit('on-next-step');          
               
         },
 
@@ -101,7 +101,7 @@ export default {
            this.submitSuccess = false;
            this.storeState.v.$reset();
 
-           this.$emit('onReset');
+           this.$emit('on-reset');
         },
 
         changeStatus(){
@@ -131,7 +131,7 @@ export default {
         onSubmit(){
             if(this._validateCurrentTab() === false)
                 return;
-            this.$emit('onComplete');
+            this.$emit('on-complete');
         },
 
         _switchTab(index){
